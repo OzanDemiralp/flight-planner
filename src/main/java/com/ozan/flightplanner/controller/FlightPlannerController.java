@@ -3,6 +3,7 @@ package com.ozan.flightplanner.controller;
 import com.ozan.flightplanner.dtos.FlightRequestDto;
 import com.ozan.flightplanner.dtos.FlightResponseDto;
 import com.ozan.flightplanner.service.FlightPlanService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,7 +17,7 @@ public class FlightPlannerController {
         return "Hello FlightPlanner!";
     }
     @PostMapping("/planflight")
-    public FlightResponseDto planFlight(@RequestBody FlightRequestDto request) {
+    public FlightResponseDto planFlight(@Valid @RequestBody FlightRequestDto request) {
         return flightPlanService.planFlight(request);
     }
 }

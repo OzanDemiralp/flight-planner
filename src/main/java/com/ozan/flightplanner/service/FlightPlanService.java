@@ -41,12 +41,12 @@ public class FlightPlanService {
             if (!dep.getFrom().equalsIgnoreCase(from) || !dep.getTo().equalsIgnoreCase(to)) {
                 continue; // sadece IST->SJJ gibi gidişleri işle
             }
-
             LocalDate desiredReturnDate = dep.getDate().plusDays(duration);
             List<Flight> candidateReturns = returnsByDate.getOrDefault(desiredReturnDate, Collections.emptyList());
             for (Flight ret : candidateReturns) {
                 double total = dep.getPrice() + ret.getPrice();
                 int nonWorkingDays = countNonWorkingDays(dep.getDate(), duration);
+                if (nonWorkingDays < request.getMinNonWorkingDays()) continue; // minimum altındakileri hiç ekleme
                 results.add(new Trip(dep, ret, dep.getPrice(), ret.getPrice(), total, nonWorkingDays));
             }
         }
@@ -59,42 +59,8 @@ public class FlightPlanService {
         List<Trip> top = results.stream().limit(request.getMaxResults()).toList();
 
         // 5) Trip -> TripDto dönüşümü
-        List<TripDto> dtoList = top.stream().map(trip -> {
-            TripDto dto = new TripDto();
-            dto.setDepartureDate(trip.getDeparture().getDate().toString());
-            dto.setDepartureTime(trip.getDeparture().getTime().toString());
-            dto.setReturnDate(trip.getRet().getDate().toString());
-            dto.setReturnTime(trip.getRet().getTime().toString());
-            dto.setDeparturePrice(trip.getDeparturePrice());
-            dto.setReturnPrice(trip.getRet().getPrice());
-            dto.setTotalPrice(trip.getTotalPrice());
-            return dto;
-        }).toList();
+        List<TripDto> dtoList = top.stream().map(TripDtoFactory::fromTrip).toList();
         return FlightResponseDto.builder().trips(dtoList).build();
-    }
-
-    //herhangi bir haftasonu günü içeriyor mu kontrol et
-    private boolean includesWeekend(LocalDate start, int duration) {
-        for (int i = 0; i < duration; i++) {
-            DayOfWeek dow = start.plusDays(i).getDayOfWeek();
-            if (dow == DayOfWeek.SATURDAY || dow == DayOfWeek.SUNDAY) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    //komple haftaspnu içeriyor mu kontrol et
-    private boolean includesFullWeekend(LocalDate start, int duration) {
-        boolean hasSaturday = false;
-        boolean hasSunday = false;
-
-        for (int i = 0; i < duration; i++) {
-            DayOfWeek dow = start.plusDays(i).getDayOfWeek();
-            if (dow == DayOfWeek.SATURDAY) hasSaturday = true;
-            if (dow == DayOfWeek.SUNDAY) hasSunday = true;
-        }
-        return hasSaturday && hasSunday;
     }
 
     public int countNonWorkingDays(LocalDate start, int duration) {
