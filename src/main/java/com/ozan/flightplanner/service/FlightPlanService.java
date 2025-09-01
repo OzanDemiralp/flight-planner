@@ -9,6 +9,7 @@ import com.ozan.flightplanner.models.TripDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -35,6 +36,8 @@ public class FlightPlanService {
             if (!dep.getFrom().equalsIgnoreCase(from) || !dep.getTo().equalsIgnoreCase(to)) {
                 continue; // sadece IST->SJJ gibi gidişleri işle
             }
+            if (!includesFullWeekend(dep.getDate(), duration)) continue; // skip vacations not covering full weekend
+
             LocalDate desiredReturnDate = dep.getDate().plusDays(duration);
             List<Flight> candidateReturns = returnsByDate.getOrDefault(desiredReturnDate, Collections.emptyList());
             for (Flight ret : candidateReturns) {
@@ -63,4 +66,30 @@ public class FlightPlanService {
         }).toList();
         return FlightResponseDto.builder().trips(dtoList).build();
     }
+
+    //haftasonu içeriyor mu kontrol et
+    private boolean includesWeekend(LocalDate start, int duration) {
+        for (int i = 0; i < duration; i++) {
+            DayOfWeek dow = start.plusDays(i).getDayOfWeek();
+            if (dow == DayOfWeek.SATURDAY || dow == DayOfWeek.SUNDAY) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean includesFullWeekend(LocalDate start, int duration) {
+        boolean hasSaturday = false;
+        boolean hasSunday = false;
+
+        for (int i = 0; i < duration; i++) {
+            DayOfWeek dow = start.plusDays(i).getDayOfWeek();
+            if (dow == DayOfWeek.SATURDAY) hasSaturday = true;
+            if (dow == DayOfWeek.SUNDAY) hasSunday = true;
+        }
+
+        return hasSaturday && hasSunday;
+    }
+
+
 }
