@@ -11,4 +11,5 @@ public class Trip {
     private double departurePrice;
     private double returnPrice;
     private double totalPrice;
+    private int nonWorkingDays;
 }

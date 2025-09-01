@@ -1,25 +1,30 @@
 package com.ozan.flightplanner.service;
 
 import com.ozan.flightplanner.config.FlightDataConfig;
+import com.ozan.flightplanner.config.HolidayConfig;
 import com.ozan.flightplanner.dtos.FlightRequestDto;
 import com.ozan.flightplanner.dtos.FlightResponseDto;
 import com.ozan.flightplanner.models.Flight;
 import com.ozan.flightplanner.models.Trip;
 import com.ozan.flightplanner.models.TripDto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Service;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 @Service
 @RequiredArgsConstructor
 public class FlightPlanService {
     private final FlightDataConfig flightDataConfig;
+    private final HolidayConfig holidayConfig;
 
     public FlightResponseDto planFlight(FlightRequestDto request) {
+
         List<Flight> flights = flightDataConfig.getFlights();
         String from = request.getFrom();
         String to = request.getTo();
@@ -36,18 +41,19 @@ public class FlightPlanService {
             if (!dep.getFrom().equalsIgnoreCase(from) || !dep.getTo().equalsIgnoreCase(to)) {
                 continue; // sadece IST->SJJ gibi gidişleri işle
             }
-            if (!includesFullWeekend(dep.getDate(), duration)) continue; // skip vacations not covering full weekend
 
             LocalDate desiredReturnDate = dep.getDate().plusDays(duration);
             List<Flight> candidateReturns = returnsByDate.getOrDefault(desiredReturnDate, Collections.emptyList());
             for (Flight ret : candidateReturns) {
                 double total = dep.getPrice() + ret.getPrice();
-                results.add(new Trip(dep, ret, dep.getPrice(), ret.getPrice(), total));
+                int nonWorkingDays = countNonWorkingDays(dep.getDate(), duration);
+                results.add(new Trip(dep, ret, dep.getPrice(), ret.getPrice(), total, nonWorkingDays));
             }
         }
 
         // 3) En ucuzdan pahalıya sırala
-        results.sort(Comparator.comparingDouble(Trip::getTotalPrice));
+        results.sort(Comparator.comparingInt(Trip::getNonWorkingDays).reversed()
+                .thenComparingDouble(Trip::getTotalPrice));
 
         // 4) Top-N al
         List<Trip> top = results.stream().limit(request.getMaxResults()).toList();
@@ -67,7 +73,7 @@ public class FlightPlanService {
         return FlightResponseDto.builder().trips(dtoList).build();
     }
 
-    //haftasonu içeriyor mu kontrol et
+    //herhangi bir haftasonu günü içeriyor mu kontrol et
     private boolean includesWeekend(LocalDate start, int duration) {
         for (int i = 0; i < duration; i++) {
             DayOfWeek dow = start.plusDays(i).getDayOfWeek();
@@ -78,6 +84,7 @@ public class FlightPlanService {
         return false;
     }
 
+    //komple haftaspnu içeriyor mu kontrol et
     private boolean includesFullWeekend(LocalDate start, int duration) {
         boolean hasSaturday = false;
         boolean hasSunday = false;
@@ -87,8 +94,19 @@ public class FlightPlanService {
             if (dow == DayOfWeek.SATURDAY) hasSaturday = true;
             if (dow == DayOfWeek.SUNDAY) hasSunday = true;
         }
-
         return hasSaturday && hasSunday;
+    }
+
+    public int countNonWorkingDays(LocalDate start, int duration) {
+        Set<LocalDate> holidays = holidayConfig.getHolidays();
+
+        return (int)
+                IntStream.range(0, duration)
+                        .mapToObj(start::plusDays)
+                        .filter(date -> date.getDayOfWeek() == DayOfWeek.SATURDAY
+                                || date.getDayOfWeek() == DayOfWeek.SUNDAY
+                                || holidays.contains(date))
+                        .count();
     }
 
 
