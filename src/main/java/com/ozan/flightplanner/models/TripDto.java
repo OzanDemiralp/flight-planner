@@ -1,10 +1,16 @@
 package com.ozan.flightplanner.models;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
+
+import java.time.LocalDate;
 
 @Data
 public class TripDto {
-    private String departureDate;
+
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    private LocalDate departureDate;
+
     private String departureTime;
     private String returnDate;
     private String returnTime;

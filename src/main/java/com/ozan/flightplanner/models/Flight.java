@@ -1,9 +1,15 @@
 package com.ozan.flightplanner.models;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
+
 import java.time.LocalDate;
 import java.time.LocalTime;
 
+@NoArgsConstructor
+@AllArgsConstructor
 @Data
 public class Flight {
     private String from;      // Nereden

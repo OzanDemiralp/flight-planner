@@ -7,7 +7,7 @@ import com.ozan.flightplanner.models.TripDto;
 public class TripDtoFactory {
     public static TripDto fromTrip(Trip trip) {
         TripDto dto = new TripDto();
-        dto.setDepartureDate(trip.getDeparture().getDate().toString());
+        dto.setDepartureDate(trip.getDeparture().getDate());
         dto.setDepartureTime(trip.getDeparture().getTime().toString());
         dto.setReturnDate(trip.getRet().getDate().toString());
         dto.setReturnTime(trip.getRet().getTime().toString());
