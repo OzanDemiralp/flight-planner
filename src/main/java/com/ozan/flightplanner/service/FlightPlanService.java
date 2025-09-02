@@ -32,15 +32,17 @@ public class FlightPlanService {
 
         // 1) Dönüş uçuşlarını tarihe göre grupla: Map<LocalDate, List<Flight>>
         Map<LocalDate, List<Flight>> returnsByDate = flights.stream()
-                .filter(f -> f.getFrom().equalsIgnoreCase(to) && f.getTo().equalsIgnoreCase(from))
+                .filter(f -> f.getFrom().equalsIgnoreCase(to)
+                        && f.getTo().equalsIgnoreCase(from)
+                        && !f.getDate().isAfter(request.getEndDate()))
                 .collect(Collectors.groupingBy(Flight::getDate));
 
         // 2) Tüm gidişleri işle
         List<Trip> results = new ArrayList<>();
         for (Flight dep : flights) {
-            if (!dep.getFrom().equalsIgnoreCase(from) || !dep.getTo().equalsIgnoreCase(to)) {
-                continue; // sadece IST->SJJ gibi gidişleri işle
-            }
+            if (!dep.getFrom().equalsIgnoreCase(from) || !dep.getTo().equalsIgnoreCase(to)) continue; // sadece IST->SJJ gibi gidişleri işle
+            if (dep.getDate().isBefore(request.getStartDate())) continue;
+
             LocalDate desiredReturnDate = dep.getDate().plusDays(duration);
             List<Flight> candidateReturns = returnsByDate.getOrDefault(desiredReturnDate, Collections.emptyList());
             for (Flight ret : candidateReturns) {
