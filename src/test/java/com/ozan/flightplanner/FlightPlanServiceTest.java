@@ -37,15 +37,17 @@ class FlightPlanServiceTest {
     void testPlanFlightWithMockData() {
         Flight dep = new Flight("IST", "SJJ", LocalDate.of(2026, 5, 1),
                 LocalTime.of(8, 0), 100);
-        Flight ret = new Flight("SJJ", "IST", LocalDate.of(2026, 5, 6),
+        Flight ret = new Flight("BEL", "IST", LocalDate.of(2026, 5, 6),
                 LocalTime.of(7, 0), 150);
 
         when(flightDataConfig.getFlights()).thenReturn(List.of(dep, ret));
         when(holidayConfig.getHolidays()).thenReturn(Set.of(LocalDate.of(2026, 5, 1)));
 
         FlightRequestDto request = new FlightRequestDto();
-        request.setFrom("IST");
-        request.setTo("SJJ");
+        request.setDepartureFrom("IST");
+        request.setDepartureTo("SJJ");
+        request.setReturnFrom("BEL");
+        request.setReturnTo("IST");
         request.setVacationLength(5);
         request.setMinNonWorkingDays(3);
         request.setStartDate(LocalDate.of(2026, 5, 1));
@@ -61,8 +63,10 @@ class FlightPlanServiceTest {
         when(flightDataConfig.getFlights()).thenReturn(List.of());
 
         FlightRequestDto request = new FlightRequestDto();
-        request.setFrom("IST");
-        request.setTo("SJJ");
+        request.setDepartureFrom("IST");
+        request.setDepartureTo("SJJ");
+        request.setReturnFrom("SJJ");    // <-- yeni alan
+        request.setReturnTo("IST");      // <-- yeni alan
         request.setVacationLength(5);
         request.setStartDate(LocalDate.of(2026, 5, 1));
         request.setEndDate(LocalDate.of(2026, 5, 30));
@@ -82,8 +86,10 @@ class FlightPlanServiceTest {
         when(flightDataConfig.getFlights()).thenReturn(List.of(dep, ret));
 
         FlightRequestDto request = new FlightRequestDto();
-        request.setFrom("IST");
-        request.setTo("SJJ");
+        request.setDepartureFrom("IST");
+        request.setDepartureTo("SJJ");
+        request.setReturnFrom("SJJ");    // <-- yeni alan
+        request.setReturnTo("IST");      // <-- yeni alan
         request.setVacationLength(5);
         request.setStartDate(LocalDate.of(2026, 5, 1));
         request.setEndDate(LocalDate.of(2026, 5, 30));
@@ -106,8 +112,10 @@ class FlightPlanServiceTest {
         when(holidayConfig.getHolidays()).thenReturn(Set.of());
 
         FlightRequestDto request = new FlightRequestDto();
-        request.setFrom("IST");
-        request.setTo("SJJ");
+        request.setDepartureFrom("IST");
+        request.setDepartureTo("SJJ");
+        request.setReturnFrom("SJJ");    // <-- yeni alan
+        request.setReturnTo("IST");      // <-- yeni alan
         request.setVacationLength(5);
         request.setStartDate(LocalDate.of(2026, 5, 1));
         request.setEndDate(LocalDate.of(2026, 5, 30));
@@ -130,8 +138,10 @@ class FlightPlanServiceTest {
         when(flightDataConfig.getFlights()).thenReturn(List.of(dep, ret));
 
         FlightRequestDto request = new FlightRequestDto();
-        request.setFrom("IST");
-        request.setTo("SJJ");
+        request.setDepartureFrom("IST");
+        request.setDepartureTo("SJJ");
+        request.setReturnFrom("SJJ");    // <-- yeni alan
+        request.setReturnTo("IST");      // <-- yeni alan
         request.setVacationLength(5);
         request.setStartDate(LocalDate.of(2026, 5, 1));
         request.setEndDate(LocalDate.of(2026, 5, 4));
@@ -153,8 +163,10 @@ class FlightPlanServiceTest {
         when(flightDataConfig.getFlights()).thenReturn(List.of(dep, ret));
 
         FlightRequestDto request = new FlightRequestDto();
-        request.setFrom("IST");
-        request.setTo("SJJ");
+        request.setDepartureFrom("IST");
+        request.setDepartureTo("SJJ");
+        request.setReturnFrom("SJJ");    // <-- yeni alan
+        request.setReturnTo("IST");      // <-- yeni alan
         request.setVacationLength(1);
         request.setStartDate(LocalDate.of(2026, 5, 1));
         request.setEndDate(LocalDate.of(2026, 5, 30));
@@ -178,8 +190,10 @@ class FlightPlanServiceTest {
         when(flightDataConfig.getFlights()).thenReturn(List.of(dep, ret, ret2));
 
         FlightRequestDto request = new FlightRequestDto();
-        request.setFrom("IST");
-        request.setTo("SJJ");
+        request.setDepartureFrom("IST");
+        request.setDepartureTo("SJJ");
+        request.setReturnFrom("SJJ");    // <-- yeni alan
+        request.setReturnTo("IST");      // <-- yeni alan
         request.setVacationLength(0);
         request.setStartDate(LocalDate.of(2026, 5, 1));
         request.setEndDate(LocalDate.of(2026, 5, 30));
@@ -196,4 +210,3 @@ class FlightPlanServiceTest {
         assertTrue(depTime.isBefore(retTime), "Dönüş uçuşu gidişten sonra olmalı");
     }
 }
-

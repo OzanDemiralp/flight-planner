@@ -30,8 +30,8 @@ class FlightplannerApplicationTests {
 	@Test
 	void testPlanFlightDateRange(){
 		FlightRequestDto request = new FlightRequestDto();
-		request.setFrom("IST");
-		request.setTo("SJJ");
+		request.setDepartureFrom("IST");
+		request.setDepartureTo("SJJ");
 		request.setStartDate(LocalDate.of(2026, 5, 1));
 		request.setEndDate(LocalDate.of(2026, 5, 30));
 		request.setVacationLength(5);

@@ -8,7 +8,6 @@ import com.ozan.flightplanner.models.Flight;
 import com.ozan.flightplanner.models.Trip;
 import com.ozan.flightplanner.models.TripDto;
 import lombok.RequiredArgsConstructor;
-import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Service;
 
 import java.time.DayOfWeek;
@@ -26,21 +25,24 @@ public class FlightPlanService {
     public FlightResponseDto planFlight(FlightRequestDto request) {
 
         List<Flight> flights = flightDataConfig.getFlights();
-        String from = request.getFrom();
-        String to = request.getTo();
+        String departureFrom = request.getDepartureFrom();
+        String departureTo = request.getDepartureTo();
+        String retFrom = request.getReturnFrom(); // <-- artık dönüş rotası burada
+        String retTo = request.getReturnTo();     // <-- artık dönüş rotası burada
+
         int duration = request.getVacationLength();
 
-        // 1) Dönüş uçuşlarını tarihe göre grupla: Map<LocalDate, List<Flight>>
+        // 1) Dönüş uçuşlarını dönüş rotasına göre grupla: Map<LocalDate, List<Flight>>
         Map<LocalDate, List<Flight>> returnsByDate = flights.stream()
-                .filter(f -> f.getFrom().equalsIgnoreCase(to)
-                        && f.getTo().equalsIgnoreCase(from)
+                .filter(f -> f.getFrom().equalsIgnoreCase(retFrom)   // eskiden 'to' kullanılıyordu
+                        && f.getTo().equalsIgnoreCase(retTo)        // eskiden 'from' kullanılıyordu
                         && !f.getDate().isAfter(request.getEndDate()))
                 .collect(Collectors.groupingBy(Flight::getDate));
 
         // 2) Tüm gidişleri işle
         List<Trip> results = new ArrayList<>();
         for (Flight dep : flights) {
-            if (!dep.getFrom().equalsIgnoreCase(from) || !dep.getTo().equalsIgnoreCase(to)) continue; // sadece IST->SJJ gibi gidişleri işle
+            if (!dep.getFrom().equalsIgnoreCase(departureFrom) || !dep.getTo().equalsIgnoreCase(departureTo)) continue; // sadece IST->SJJ gibi gidişleri işle
             if (dep.getDate().isBefore(request.getStartDate())) continue;
 
             LocalDate desiredReturnDate = dep.getDate().plusDays(duration);
