@@ -13,6 +13,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
 class FlightplannerApplicationTests {
+
 	@Autowired
 	FlightPlanService flightPlanService;
 
@@ -44,6 +45,5 @@ class FlightplannerApplicationTests {
 				assertTrue(!trip.getDepartureDate().isBefore(request.getStartDate())
 						&& !trip.getDepartureDate().isAfter(request.getEndDate()))
 		);
-
 	}
 }

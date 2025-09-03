@@ -49,6 +49,7 @@ public class FlightPlanService {
                 double total = dep.getPrice() + ret.getPrice();
                 int nonWorkingDays = countNonWorkingDays(dep.getDate(), duration);
                 if (nonWorkingDays < request.getMinNonWorkingDays()) continue; // minimum altındakileri hiç ekleme
+                if(dep.getDate().isEqual(ret.getDate())) if(dep.getTime().isAfter(ret.getTime())) continue;
                 results.add(new Trip(dep, ret, dep.getPrice(), ret.getPrice(), total, nonWorkingDays));
             }
         }
