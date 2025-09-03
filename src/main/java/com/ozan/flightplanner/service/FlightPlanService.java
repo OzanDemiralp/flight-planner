@@ -34,8 +34,8 @@ public class FlightPlanService {
 
         // 1) Dönüş uçuşlarını dönüş rotasına göre grupla: Map<LocalDate, List<Flight>>
         Map<LocalDate, List<Flight>> returnsByDate = flights.stream()
-                .filter(f -> f.getFrom().equalsIgnoreCase(retFrom)   // eskiden 'to' kullanılıyordu
-                        && f.getTo().equalsIgnoreCase(retTo)        // eskiden 'from' kullanılıyordu
+                .filter(f -> f.getFrom().equalsIgnoreCase(retFrom)
+                        && f.getTo().equalsIgnoreCase(retTo)
                         && !f.getDate().isAfter(request.getEndDate()))
                 .collect(Collectors.groupingBy(Flight::getDate));
 
