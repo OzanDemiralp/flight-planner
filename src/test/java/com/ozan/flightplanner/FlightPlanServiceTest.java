@@ -52,7 +52,6 @@ class FlightPlanServiceTest {
         request.setMinNonWorkingDays(3);
         request.setStartDate(LocalDate.of(2026, 5, 1));
         request.setEndDate(LocalDate.of(2026, 5, 30));
-        request.setMaxResults(10);
 
         FlightResponseDto response = flightPlanService.planFlight(request);
         assertEquals(1, response.getTrips().size());
@@ -70,7 +69,6 @@ class FlightPlanServiceTest {
         request.setVacationLength(5);
         request.setStartDate(LocalDate.of(2026, 5, 1));
         request.setEndDate(LocalDate.of(2026, 5, 30));
-        request.setMaxResults(10);
 
         FlightResponseDto response = flightPlanService.planFlight(request);
         assertEquals(0, response.getTrips().size());
@@ -93,7 +91,6 @@ class FlightPlanServiceTest {
         request.setVacationLength(5);
         request.setStartDate(LocalDate.of(2026, 5, 1));
         request.setEndDate(LocalDate.of(2026, 5, 30));
-        request.setMaxResults(10);
 
         FlightResponseDto response = flightPlanService.planFlight(request);
 
@@ -120,7 +117,6 @@ class FlightPlanServiceTest {
         request.setStartDate(LocalDate.of(2026, 5, 1));
         request.setEndDate(LocalDate.of(2026, 5, 30));
         request.setMinNonWorkingDays(3);
-        request.setMaxResults(10);
 
         FlightResponseDto response = flightPlanService.planFlight(request);
 
@@ -146,7 +142,6 @@ class FlightPlanServiceTest {
         request.setStartDate(LocalDate.of(2026, 5, 1));
         request.setEndDate(LocalDate.of(2026, 5, 4));
         request.setMinNonWorkingDays(2);
-        request.setMaxResults(10);
 
         FlightResponseDto response = flightPlanService.planFlight(request);
 
@@ -171,7 +166,6 @@ class FlightPlanServiceTest {
         request.setStartDate(LocalDate.of(2026, 5, 1));
         request.setEndDate(LocalDate.of(2026, 5, 30));
         request.setMinNonWorkingDays(0);
-        request.setMaxResults(10);
 
         FlightResponseDto response = flightPlanService.planFlight(request);
 
@@ -198,7 +192,6 @@ class FlightPlanServiceTest {
         request.setStartDate(LocalDate.of(2026, 5, 1));
         request.setEndDate(LocalDate.of(2026, 5, 30));
         request.setMinNonWorkingDays(0);
-        request.setMaxResults(10);
 
         FlightResponseDto response = flightPlanService.planFlight(request);
 
