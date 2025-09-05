@@ -60,11 +60,8 @@ public class FlightPlanService {
         results.sort(Comparator.comparingInt(Trip::getNonWorkingDays).reversed()
                 .thenComparingDouble(Trip::getTotalPrice));
 
-        // 4) Top-N al
-        List<Trip> top = results.stream().limit(request.getMaxResults()).toList();
-
         // 5) Trip -> TripDto dönüşümü
-        List<TripDto> dtoList = top.stream().map(TripDtoFactory::fromTrip).toList();
+        List<TripDto> dtoList = results.stream().map(TripDtoFactory::fromTrip).toList();
         return FlightResponseDto.builder().trips(dtoList).build();
     }
 

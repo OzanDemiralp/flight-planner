@@ -38,7 +38,4 @@ public class FlightRequestDto {
 
     @Min(0)
     private int minNonWorkingDays;
-
-    @Min(1)
-    private int maxResults;
 }
