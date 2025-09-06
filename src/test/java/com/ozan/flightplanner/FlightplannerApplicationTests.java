@@ -36,7 +36,6 @@ class FlightplannerApplicationTests {
 		request.setEndDate(LocalDate.of(2026, 5, 30));
 		request.setVacationLength(5);
 		request.setMinNonWorkingDays(3);
-		request.setMaxResults(100);
 
 		var response = flightPlanService.planFlight(request);
 

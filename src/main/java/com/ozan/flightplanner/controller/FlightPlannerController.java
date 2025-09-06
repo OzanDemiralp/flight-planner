@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/flightplan")
+@CrossOrigin(origins = "http://localhost:3000") // ya da "*"
 public class FlightPlannerController {
     final private FlightPlanService flightPlanService;
     @GetMapping("/hello")
