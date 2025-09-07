@@ -1,6 +1,7 @@
 package com.ozan.flightplanner.dtos;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.ozan.flightplanner.validation.StartBeforeEnd;
 import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
@@ -9,6 +10,7 @@ import lombok.Data;
 import java.time.LocalDate;
 
 @Data
+@StartBeforeEnd
 public class FlightRequestDto {
 
     @NotNull
