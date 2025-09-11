@@ -1,6 +1,6 @@
 package com.ozan.flightplanner.service;
 
-import com.ozan.flightplanner.entities.City;
+import com.ozan.flightplanner.entities.CityEntity;
 import com.ozan.flightplanner.repository.CityRepository;
 import org.springframework.stereotype.Service;
 
@@ -14,11 +14,11 @@ public class CityService {
         this.cityRepository = cityRepository;
     }
 
-    public List<City> getAllCities(){
+    public List<CityEntity> getAllCities(){
         return cityRepository.findAll();
     }
 
-    public City getCityByCode(String code){
+    public CityEntity getCityByCode(String code){
         return cityRepository.findByCode(code).orElseThrow(() -> new RuntimeException("City not found"));
     }
 }

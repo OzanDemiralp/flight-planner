@@ -4,14 +4,17 @@ import com.ozan.flightplanner.config.FlightDataConfig;
 import com.ozan.flightplanner.config.HolidayConfig;
 import com.ozan.flightplanner.dtos.FlightRequestDto;
 import com.ozan.flightplanner.dtos.FlightResponseDto;
+import com.ozan.flightplanner.mapper.FlightMapper;
 import com.ozan.flightplanner.models.Flight;
 import com.ozan.flightplanner.models.TripDto;
+import com.ozan.flightplanner.repository.FlightRepository;
 import com.ozan.flightplanner.service.FlightPlanService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
@@ -30,6 +33,13 @@ class FlightPlanServiceTest {
     @Mock
     private HolidayConfig holidayConfig;
 
+    @Mock
+    private FlightRepository flightRepository;
+
+    @Mock
+    private FlightMapper flightMapper;
+
+
     @InjectMocks
     private FlightPlanService flightPlanService;
 
@@ -40,7 +50,6 @@ class FlightPlanServiceTest {
         Flight ret = new Flight("BEL", "IST", LocalDate.of(2026, 5, 6),
                 LocalTime.of(7, 0), 150);
 
-        when(flightDataConfig.getFlights()).thenReturn(List.of(dep, ret));
         when(holidayConfig.getHolidays()).thenReturn(Set.of(LocalDate.of(2026, 5, 1)));
 
         FlightRequestDto request = new FlightRequestDto();
@@ -59,7 +68,6 @@ class FlightPlanServiceTest {
 
     @Test
     void shouldReturnEmptyTrips_whenNoFlightsAvailable(){
-        when(flightDataConfig.getFlights()).thenReturn(List.of());
 
         FlightRequestDto request = new FlightRequestDto();
         request.setDepartureFrom("IST");
@@ -81,7 +89,6 @@ class FlightPlanServiceTest {
         Flight ret = new Flight("SJJ", "IST", LocalDate.of(2026, 5, 8),
                 LocalTime.of(8, 0), 100);
 
-        when(flightDataConfig.getFlights()).thenReturn(List.of(dep, ret));
 
         FlightRequestDto request = new FlightRequestDto();
         request.setDepartureFrom("IST");
@@ -105,8 +112,6 @@ class FlightPlanServiceTest {
                 LocalTime.of(8, 0), 100);
 
 
-        when(flightDataConfig.getFlights()).thenReturn(List.of(dep, ret));
-        when(holidayConfig.getHolidays()).thenReturn(Set.of());
 
         FlightRequestDto request = new FlightRequestDto();
         request.setDepartureFrom("IST");
@@ -131,7 +136,6 @@ class FlightPlanServiceTest {
                 LocalTime.of(8, 0), 100);
 
 
-        when(flightDataConfig.getFlights()).thenReturn(List.of(dep, ret));
 
         FlightRequestDto request = new FlightRequestDto();
         request.setDepartureFrom("IST");
@@ -155,7 +159,6 @@ class FlightPlanServiceTest {
         Flight ret = new Flight("SJJ", "IST", LocalDate.of(2026, 5, 2),
                 LocalTime.of(8, 0), 100);
 
-        when(flightDataConfig.getFlights()).thenReturn(List.of(dep, ret));
 
         FlightRequestDto request = new FlightRequestDto();
         request.setDepartureFrom("IST");
@@ -181,7 +184,6 @@ class FlightPlanServiceTest {
         Flight ret2 = new Flight("SJJ", "IST", LocalDate.of(2026, 5, 2),
                 LocalTime.of(23, 0), 100);
 
-        when(flightDataConfig.getFlights()).thenReturn(List.of(dep, ret, ret2));
 
         FlightRequestDto request = new FlightRequestDto();
         request.setDepartureFrom("IST");

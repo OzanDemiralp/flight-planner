@@ -2,7 +2,7 @@ package com.ozan.flightplanner.controller;
 
 import com.ozan.flightplanner.dtos.FlightRequestDto;
 import com.ozan.flightplanner.dtos.FlightResponseDto;
-import com.ozan.flightplanner.entities.City;
+import com.ozan.flightplanner.entities.CityEntity;
 import com.ozan.flightplanner.service.CityService;
 import com.ozan.flightplanner.service.FlightPlanService;
 import jakarta.validation.Valid;
@@ -30,12 +30,12 @@ public class FlightPlannerController {
     }
 
     @GetMapping("/cities")
-    public List<City> getCities(){
+    public List<CityEntity> getCities(){
         return cityService.getAllCities();
     }
 
     @GetMapping("/cities/search")
-    public City getCityByCode(@RequestParam String code) {
+    public CityEntity getCityByCode(@RequestParam String code) {
         return cityService.getCityByCode(code);
     }
 }

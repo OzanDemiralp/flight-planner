@@ -6,11 +6,11 @@ import lombok.Data;
 @Entity
 @Table(name="cities")
 @Data
-public class City {
+public class CityEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String name;
-    private String code;
+    String code;
+    String name;
 }
