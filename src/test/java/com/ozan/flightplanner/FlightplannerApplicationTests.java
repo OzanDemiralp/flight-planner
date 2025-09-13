@@ -33,7 +33,7 @@ class FlightplannerApplicationTests {
 		request.setDepartureFrom("IST");
 		request.setDepartureTo("SJJ");
 		request.setStartDate(LocalDate.of(2026, 5, 1));
-		request.setEndDate(LocalDate.of(2026, 5, 30));
+		request.setEndDate(LocalDate.of(2026, 5, 30)	);
 		request.setVacationLength(5);
 		request.setMinNonWorkingDays(3);
 

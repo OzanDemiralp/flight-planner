@@ -32,7 +32,6 @@ public class FlightPlanService {
     }
 
     public FlightResponseDto planFlight(FlightRequestDto request) {
-
         String departureFrom = request.getDepartureFrom();
         String departureTo = request.getDepartureTo();
         String retFrom = request.getReturnFrom();
