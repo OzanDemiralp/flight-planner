@@ -5,11 +5,13 @@ import com.ozan.flightplanner.validation.StartBeforeEnd;
 import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
+import lombok.Builder;
 import lombok.Data;
 
 import java.time.LocalDate;
 
 @Data
+@Builder
 @StartBeforeEnd
 public class FlightRequestDto {
 
@@ -35,7 +37,7 @@ public class FlightRequestDto {
     @Future
     private LocalDate endDate;
 
-    @Min(1)
+    @Min(0)
     private int vacationLength;
 
     @Min(0)

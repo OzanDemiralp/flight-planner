@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2025-09-11T22:04:23+0300",
+    date = "2025-09-16T13:22:04+0300",
     comments = "version: 1.6.3, compiler: javac, environment: Java 23.0.2 (Oracle Corporation)"
 )
 @Component
@@ -21,18 +21,18 @@ public class TripMapperImpl implements TripMapper {
             return null;
         }
 
-        TripDto tripDto = new TripDto();
+        TripDto.TripDtoBuilder tripDto = TripDto.builder();
 
-        tripDto.setDepartureDate( tripDepartureDate( trip ) );
-        tripDto.setDeparturePrice( trip.getDeparturePrice() );
-        tripDto.setReturnPrice( tripRetPrice( trip ) );
-        tripDto.setTotalPrice( trip.getTotalPrice() );
+        tripDto.departureDate( tripDepartureDate( trip ) );
+        tripDto.departurePrice( trip.getDeparturePrice() );
+        tripDto.returnPrice( tripRetPrice( trip ) );
+        tripDto.totalPrice( trip.getTotalPrice() );
 
-        tripDto.setDepartureTime( trip.getDeparture().getTime().toString() );
-        tripDto.setReturnDate( trip.getRet().getDate().toString() );
-        tripDto.setReturnTime( trip.getRet().getTime().toString() );
+        tripDto.departureTime( trip.getDeparture().getTime().toString() );
+        tripDto.returnDate( trip.getRet().getDate().toString() );
+        tripDto.returnTime( trip.getRet().getTime().toString() );
 
-        return tripDto;
+        return tripDto.build();
     }
 
     private LocalDate tripDepartureDate(Trip trip) {

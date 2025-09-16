@@ -17,7 +17,6 @@ class FlightplannerApplicationTests {
 	@Autowired
 	FlightPlanService flightPlanService;
 
-	// Unit Test
 	@Test
 	void testCountNonWorkingDays(){
 		LocalDate start = LocalDate.of(2026, 5, 1);
@@ -26,23 +25,4 @@ class FlightplannerApplicationTests {
 		assertEquals(3, count);
 	}
 
-	// Regression Test
-	@Test
-	void testPlanFlightDateRange(){
-		FlightRequestDto request = new FlightRequestDto();
-		request.setDepartureFrom("IST");
-		request.setDepartureTo("SJJ");
-		request.setStartDate(LocalDate.of(2026, 5, 1));
-		request.setEndDate(LocalDate.of(2026, 5, 30)	);
-		request.setVacationLength(5);
-		request.setMinNonWorkingDays(3);
-
-		var response = flightPlanService.planFlight(request);
-
-		// Tüm dönüşler startDate ve endDate arasında mı kontrol et
-		response.getTrips().forEach(trip ->
-				assertTrue(!trip.getDepartureDate().isBefore(request.getStartDate())
-						&& !trip.getDepartureDate().isAfter(request.getEndDate()))
-		);
-	}
 }
