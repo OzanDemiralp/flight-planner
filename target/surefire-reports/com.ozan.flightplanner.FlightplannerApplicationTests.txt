@@ -1,4 +1,0 @@
--------------------------------------------------------------------------------
-Test set: com.ozan.flightplanner.FlightplannerApplicationTests
--------------------------------------------------------------------------------
-Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 9.451 s -- in com.ozan.flightplanner.FlightplannerApplicationTests
