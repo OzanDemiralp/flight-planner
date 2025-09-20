@@ -1,0 +1,25 @@
+services:
+  db:
+    image: postgres:15
+    environment:
+      POSTGRES_USER: ozan
+      POSTGRES_PASSWORD: 1234
+      POSTGRES_DB: flightplanner
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  backend:
+    build: .
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/flightplanner
+      SPRING_DATASOURCE_USERNAME: ozan
+      SPRING_DATASOURCE_PASSWORD: 1234
+    depends_on:
+      - db
+
+volumes:
+  postgres_data:
