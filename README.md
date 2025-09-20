@@ -89,3 +89,4 @@ curl -X POST http://localhost:8080/api/flightplan/planflight \
 ## Notes
 - This API currently works with dummy data for demonstration purposes.
 - Real world flights are not available. Searching for flights in months/between cities besides the suggested request may not return results.
+- The frontend for this project is available in a separate repository: [flight-planner-frontend](https://github.com/OzanDemiralp/flight-planner-frontend)
