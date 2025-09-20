@@ -9,7 +9,7 @@ A Spring Boot REST API for planning round-trip flights, considering departure, r
 - [Technologies](#technologies)
 - [Getting Started](#getting-started)
 - [API Endpoints](#api-endpoints)
-- [Example Requests](#example-requests)
+- [Example Request](#example-request)
 - [Notes](#notes)
 - [License](#license)
 
